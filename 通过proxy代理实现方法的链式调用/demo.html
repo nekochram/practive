@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function increase(value){
+      return value + 1
+    }
+    function decrease(value){
+      return value - 1
+    }
+    function double(value){
+      return value * 2
+    }
+    const chain = function (value){
+      const handler={
+        get:function(target,property){
+          if(property == 'end'){
+            return target.value
+          }
+          if(typeof window[property]==='function'){
+            target.value=window[property](target.value)
+            return proxy
+          }
+          return target[property]
+        }
+      }
+      const proxy =new Proxy({value},handler)
+      return proxy
+    }
+    console.log(chain(2).increase.double.decrease.end)
+  </script>
+</body>
+</html>

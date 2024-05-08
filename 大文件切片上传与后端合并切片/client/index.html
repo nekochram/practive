@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <input id="file" type="file" onchange="handleChange(event)" />
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      const CHUNK_SIZE = 1024 * 1024 * 2; //2MB
+      const THREAD_NUM = navigator.hardwareConcurrency || 4;
+      async function cutFile(file) {
+        return new Promise((resolve, reject) => {
+          const result = [];
+          const chunkCount = Math.ceil(file.size / CHUNK_SIZE);
+          const workerChunkCount = Math.ceil(chunkCount / THREAD_NUM);
+          let finishWorker = 0;
+          for (let i = 0; i < THREAD_NUM; i++) {
+            const worker = new Worker("./webwork.js", {
+              type: "module",
+            });
+            let startIndex = i * workerChunkCount;
+            let endIndex = startIndex + workerChunkCount;
+            if (endIndex > chunkCount) {
+              endIndex = chunkCount;
+            }
+            worker.postMessage({
+              file,
+              startIndex,
+              endIndex,
+              CHUNK_SIZE,
+            });
+            worker.onmessage = (e) => {
+              for (const pack of e.data) {
+                result[pack.index] = pack
+                let formData=new FormData()
+                for(let key in pack){
+                  formData.append(key,pack[key])
+                }
+                axios.post('http://127.0.0.1:3000/upload', formData)
+                .then(function (response) {
+                  
+                })
+                .catch(function (error) {
+                  console.log(error);
+                  reject(error)
+                });
+              }
+              worker.terminate();
+              finishWorker++;
+              if (finishWorker === THREAD_NUM) {
+                resolve(result);
+              }
+            };
+          }
+        });
+      }
+
+      async function handleChange(event) {
+        const file = event.target.files[0];
+        console.time("cuter");
+        try {
+          const chunks = await cutFile(file);
+          //都上传完了发起和并请求叫后端合并文件
+          // axios.post("http://127.0.0.1:3000/merge",JSON.stringify({filename:file.name}))
+        } catch (error) {
+          console.log(error)
+        }
+        console.timeEnd("cuter");
+        console.log(chunks);
+      }
+    </script>
+  </body>
+</html>

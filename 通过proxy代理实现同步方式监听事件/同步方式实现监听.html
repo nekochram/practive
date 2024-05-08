@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button>按钮</button>
+  <script>
+    function getElement(cssSelector){
+      const element=document.querySelector(cssSelector)
+      const proxy = new Proxy(element,{
+        get:(target,name)=>{
+          if(!name.startsWith("wait")){
+            return Reflect.get(target,name)
+          }
+          const eventName=name.replace("wait","").toLowerCase()
+          return new Promise((resolve,reject)=>{
+            element.addEventListener(eventName,resolve,{once:true})
+          })
+        }
+      })
+      return proxy
+    }
+    (async()=>{
+      const btn=getElement("button")
+      while(true){
+        await btn.waitClick
+        console.log("事件触发了")
+      }
+    })()
+  </script>
+</body>
+</html>

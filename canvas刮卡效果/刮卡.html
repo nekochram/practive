@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="100"></canvas>
+    <div class="text">刮开了</div>
+</body>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .text{
+        position: absolute;
+        left: 130px;
+        top: 35px;
+        z-index: -1;
+    }
+</style>
+<script>
+    const canvas=document.getElementById('myCanvas')
+    const ctx=canvas.getContext('2d')
+    ctx.fillStyle='grey'
+    ctx.fillRect(0,0,400,100)
+    ctx.fillStyle='#fff'
+    ctx.fillText('刮开',180,50)
+
+    let isDraw=false
+    canvas.onmousedown=function(){
+        isDraw=true
+    }
+    canvas.onmouseup=function(){
+        isDraw=false
+    }
+    canvas.onmousemove=function(e){
+        if(!isDraw)return
+        let x=e.pageX - canvas.offsetLeft
+        let y=e.pageY - canvas.offsetTop
+        ctx.globalCompositeOperation='destination-out'
+        ctx.arc(x,y,5,0,2*Math.PI)
+        ctx.fill()
+    }
+</script>
+</html>

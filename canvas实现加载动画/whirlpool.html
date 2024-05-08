@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+    const canvas=document.getElementById('canvas')
+    const ctx=canvas.getContext('2d')
+    canvas.width=innerWidth
+    canvas.height=innerHeight
+    let angle=0
+    let speed=0.1
+    function animation(){
+        angle+=speed
+        let x=canvas.width/2 + 50*Math.cos(angle)
+        let y=canvas.height/2 + 50*Math.sin(angle)
+        ctx.clearRect(0,0,canvas.width,canvas.height)
+        ctx.beginPath()
+        ctx.fillStyle='aqua'
+        ctx.arc(x,y,5,0,2*Math.PI)
+        ctx.fill()
+        ctx.closePath()
+        window.requestAnimationFrame(animation)
+    }
+    animation()
+</script>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    #canvas{
+        position: relative;
+        z-index: 1;
+    }
+</style>
+</html>

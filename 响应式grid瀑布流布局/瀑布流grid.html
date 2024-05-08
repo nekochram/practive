@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root{
+      --w:min(150px,100%);
+      --g:10px;
+    }
+    .operation{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200px;
+      border: 1px solid black;
+      border-radius: 10px;
+    }
+    .container{
+      display: grid;
+      grid-template-columns: repeat(auto-fit,var(--w));
+      padding: var(--g);
+      justify-content: center;
+      grid-auto-rows: var(--g);
+      column-gap: var(--g);
+      counter-reset: count;
+    }
+    .container > .item{
+      width: 100%;
+      background-color: #888;
+      padding: var(--g);
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+      counter-increment: count;
+      font-size: 24px;
+      color: white;
+      border-radius: 10px;
+    }
+    .item::before{
+      content: counter(count);
+    }
+  </style>
+</head>
+<body>
+  <div class="operation">
+    <p><input id="gap-range" type="range" value="1" min="1" max="10"></p>
+    <p><button id="add">add</button></p>
+    <p><button id="add100">add100</button></p>
+  </div>
+  <div class="container"></div>
+  <script>
+    let gap=10
+    const container=document.querySelector(".container")
+    const rangeBtn=document.querySelector("#gap-range")
+    const addBtn=document.querySelector("#add")
+    const add100Btn=document.querySelector("#add100")
+    const createItem=(h)=>{
+      const div=document.createElement("div")
+      const height=Math.ceil(h/gap)
+      div.className="item"
+      div.style.height=`${height * gap}px`
+      div.style.gridRow=`span ${height * gap / 10 + 1}`
+      container.appendChild(div)
+    }
+    rangeBtn.addEventListener("input",(e)=>{
+      const value=+e.target.value * 10
+      gap= value
+      container.innerHTML=""
+      container.style.columnGap=`${value}px`
+    })
+    addBtn.addEventListener("click",(e)=>{
+      createItem(Math.ceil(50 + Math.random() * 500))
+    })
+    add100Btn.addEventListener("click",(e)=>{
+      for(let i=0;i<100;i++){
+        createItem(Math.ceil(50 + Math.random() * 500))
+      }
+    })
+  </script>
+</body>
+</html>
