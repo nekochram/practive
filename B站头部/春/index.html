@@ -1,0 +1,405 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>春</title>
+    <style>
+      html body {
+        margin: 0 auto;
+      }
+
+      #content {
+        position: relative;
+        min-height: 155px;
+        height: 9.375vw;
+        min-width: 999px;
+        background-color: #f9f9f9;
+        display: flex;
+        justify-content: center;
+        background-repeat: no-repeat;
+        background-position: center 0;
+        background-size: cover;
+        margin: 0 auto;
+        z-index: 0;
+        box-sizing: border-box;
+      }
+
+      #wrap {
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+
+      .item {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+      }
+
+      img {
+        border-style: none;
+        vertical-align: middle;
+      }
+
+      #canvas {
+        position: absolute;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="content">
+      <div id="wrap">
+        <div class="item">
+          <img
+            src="./image/1.png"
+            width="4833px"
+            height="180px"
+            alt=""
+            style="transform: 'scale(1) translate(0px, -15px) rotate(0deg)'"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/2.png"
+            width="4833px"
+            height="180px"
+            alt=""
+            style="transform: scale(1) translate(1100px, 0px) rotate(0deg)"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/3.png"
+            width="1585px"
+            height="162px"
+            alt=""
+            style="transform: scale(1) translate(675px, 0px) rotate(0deg)"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/4.png"
+            width="1439px"
+            height="176px"
+            alt=""
+            style="transform: scale(1) translate(-637px, 0px) rotate(0deg)"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/5.png"
+            width="250px"
+            height="62px"
+            alt=""
+            style="transform: scale(1) translate(607.5px, 45px) rotate(0deg)"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/6.png"
+            width="205px"
+            height="84px"
+            alt=""
+            style="transform: scale(1) translate(252px, 36.4px) rotate(0deg)"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/7.png"
+            width="1229px"
+            height="125px"
+            alt=""
+            style="transform: scale(1) translate(112px, 27px) rotate(0deg)"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/8.png"
+            width="1229px"
+            height="81px"
+            alt=""
+            style="transform: scale(1) translate(-350px, 49px) rotate(0deg)"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/9.png"
+            width="198px"
+            height="138px"
+            alt=""
+            style="
+              transform: scale(1) translate(-240px, 16px) rotate(0deg);
+              opacity: 0;
+            "
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/10.png"
+            width="58px"
+            height="102px"
+            alt=""
+            style="
+              transform: scale(1) translate(-340px, 32px) rotate(0deg);
+              opacity: 0;
+            "
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/11.png"
+            width="270px"
+            height="114px"
+            alt=""
+            style="transform: scale(1) translate(-90px, 13.5px) rotate(0deg)"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/12.png"
+            width="2138px"
+            height="180px"
+            alt=""
+            style="transform: scale(1) translate(100px, 0px) rotate(0deg)"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/13.png"
+            width="419px"
+            height="147px"
+            alt=""
+            style="
+              transform: scale(1) translate(216px, 13.5px) rotate(0deg);
+              opacity: 1;
+            "
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/14.png"
+            width="444px"
+            height="211px"
+            alt=""
+            style="transform: scale(1) translate(2100px, 0px) rotate(0deg)"
+          />
+        </div>
+        <div class="item">
+          <img
+            src="./image/15.png"
+            width="958px"
+            height="180px"
+            alt=""
+            style="transform: scale(1) translate(-1000px, 0px) rotate(0deg)"
+          />
+        </div>
+        <canvas id="canvas"></canvas>
+        <img style="display: none" id="img1" src="./花瓣1.png" alt="" />
+        <img style="display: none" id="img2" src="./花瓣2.png" alt="" />
+      </div>
+    </div>
+    <script>
+      const item = document.getElementsByClassName("item");
+      const content = document.getElementById("content");
+      const init = () => {
+        item[0].children[0].style.transform =
+          "scale(1) translate(0px, -15px) rotate(0deg)";
+        // 山和亭子
+        item[1].children[0].style.transform =
+          "scale(1) translate(1100px, 0px) rotate(0deg)";
+        // 主板图-背景小山包
+        item[2].children[0].style.transform =
+          "scale(1) translate(675px, 0px) rotate(0deg)";
+        // 左侧-桥和柳树
+        item[3].children[0].style.transform =
+          "scale(1) translate(-637px, 0px) rotate(0deg)";
+        // 右侧-两条船小电视船头
+        item[4].children[0].style.transform =
+          "scale(1) translate(607.5px, 45px) rotate(0deg)";
+        // 右侧-划船姐妹
+        item[5].children[0].style.transform =
+          "scale(1) translate(252px, 36.4px) rotate(0deg)";
+        // 右侧-水旁边的一棵树
+        item[6].children[0].style.transform =
+          "scale(1) translate(112px, 27px) rotate(0deg)";
+        // 主板图-左侧-放风筝一家三口
+        item[7].children[0].style.transform =
+          "scale(1) translate(-350px, 49px) rotate(0deg)";
+        // 左侧-放风筝女孩
+        item[8].children[0].style.transform =
+          "scale(1) translate(-240px, 16px) rotate(0deg)";
+        item[8].children[0].style.opacity = 0;
+        // 左侧-背影女孩
+        item[9].children[0].style.transform =
+          "scale(1) translate(-340px, 32px) rotate(0deg)";
+        item[9].children[0].style.opacity = 0;
+        // 主板-中左-两棵树
+        item[10].children[0].style.transform =
+          "scale(1) translate(-90px, 13.5px) rotate(0deg) ";
+        // 主板-中右-蝴蝶女孩后边的树
+        item[11].children[0].style.transform =
+          "scale(1) translate(100px, 0px) rotate(0deg) ";
+        // 主板-中右-玩蝴蝶的两个女孩
+        item[12].children[0].style.transform =
+          "scale(1) translate(216px, 13.5px) rotate(0deg)";
+        item[12].children[0].style.opacity = 1;
+        // 最右侧的柳树叶
+        item[13].children[0].style.transform =
+          "scale(1) translate(2100px, 0px) rotate(0deg)";
+        item[13].children[0].style.filter = "blur(2px)";
+        // 左侧最前方的大桃树
+        item[14].children[0].style.transform =
+          "scale(1) translate(-1000px, 0px) rotate(0deg)";
+      };
+
+      let firstEnterX;
+      let offsetX;
+      const mouseEnter = (e) => {
+        firstEnterX = e.clientX;
+      };
+      const mouseMove = (e) => {
+        offsetX = firstEnterX - e.clientX;
+        opacity = Math.abs(offsetX / window.outerWidth);
+        if (offsetX > 0) {
+          console.log("左滑");
+          // 左滑
+          // 左侧-放风筝女孩
+          item[8].children[0].style.opacity = opacity;
+          // 左侧-背影女孩
+          item[9].children[0].style.opacity = opacity;
+          // 右侧-划船姐妹
+          item[5].children[0].style.opacity = 0;
+        } else {
+          // 右滑
+          // 玩蝴蝶的两个女孩
+          item[12].children[0].style.opacity = 1 - opacity;
+          // 右侧-划船姐妹
+          item[5].children[0].style.opacity = 1;
+        }
+        item[0].children[0].style.transform = `scale(1) translate(0px, -15px) rotate(0deg)`;
+        // 山和亭子
+        item[1].children[0].style.transform = `scale(1) translate(${
+          1100 + offsetX * 0.1
+        }px, 0px) rotate(0deg)`;
+        // 主板图-背景小山包
+        item[2].children[0].style.transform = `scale(1) translate(${
+          675 + offsetX * 0.1
+        }px, 0px) rotate(0deg)`;
+        // 左侧-桥和柳树
+        item[3].children[0].style.transform = `scale(1) translate(${
+          -637 + offsetX * 0.2
+        }px, 0px) rotate(0deg)`;
+        // 右侧-两条船小电视船头
+        item[4].children[0].style.transform = `scale(1) translate(${
+          607.5 + offsetX * 0.05
+        }px, 45px) rotate(0deg)`;
+        // 右侧-划船姐妹
+        item[5].children[0].style.transform = `scale(1) translate(${
+          252 + offsetX * 0.02
+        }px, 36.4px) rotate(0deg)`;
+        // 右侧-水旁边的一棵树
+        item[6].children[0].style.transform = `scale(1) translate(${
+          112 + offsetX * 0.4
+        }px, 27px) rotate(0deg)`;
+        // 主板图-左侧-放风筝一家三口
+        item[7].children[0].style.transform = `scale(1) translate(${
+          -350 + offsetX * 0.5
+        }px, 49px) rotate(0deg)`;
+        // 左侧-放风筝女孩
+        item[8].children[0].style.transform = `scale(1) translate(${
+          -240 + offsetX * 0.35
+        }px, 16px) rotate(0deg)`;
+        // 左侧-背影女孩
+        item[9].children[0].style.transform = `scale(1) translate(${
+          -340 + offsetX * 0.32
+        }px, 32px) rotate(0deg)`;
+        // 主板-中左-两棵树
+        item[10].children[0].style.transform = `scale(1) translate(${
+          -90 + offsetX * 0.7
+        }px, 13.5px) rotate(0deg) `;
+        // 主板-中右-蝴蝶女孩后边的树
+        item[11].children[0].style.transform = `scale(1) translate(${
+          100 + offsetX * 1.1
+        }px, 0px) rotate(0deg) `;
+        // 主板-中右-玩蝴蝶的两个女孩
+        item[12].children[0].style.transform = `scale(1) translate(${
+          216 + offsetX * 1.1
+        }px, 13.5px) rotate(0deg)`;
+        // 最右侧的柳树叶
+        item[13].children[0].style.transform = `scale(1) translate(${
+          2100 + offsetX * 1.5
+        }px, 0px) rotate(0deg)`;
+        // 左侧最前方的大桃树
+        item[14].children[0].style.transform = `scale(1) translate(${
+          -1000 + offsetX * 1.8
+        }px, 0px) rotate(0deg)`;
+      };
+      const mouseLeave = () => {
+        init();
+      };
+
+      content.addEventListener("mouseenter", mouseEnter);
+      content.addEventListener("mousemove", mouseMove);
+      content.addEventListener("mouseleave", mouseLeave);
+
+      let canvas = document.getElementById("canvas");
+      let context = canvas.getContext("2d");
+      let w = window.innerWidth;
+      let h = content.offsetHeight;
+
+      canvas.width = w;
+      canvas.height = h;
+      let img0 = document.getElementById("img1");
+      let img1 = document.getElementById("img2");
+      let imgArr = [img0, img1];
+
+      let petalArr = [];
+      for (let i = 0; i < 10; i++) {
+        petalArr.push({
+          x: Math.random() * w,
+          y: Math.random() * 1,
+          vx: Math.random() * 1.4,
+          vy: Math.random() * 5,
+          img: imgArr[parseInt(Math.random() * 2)],
+        });
+      }
+      const draw = () => {
+        context.clearRect(0, 0, w, h);
+        context.beginPath();
+        petalArr.forEach((e) => {
+          context.moveTo(e.x, e.y);
+          context.drawImage(e.img, e.x, e.y, 8, 8);
+        });
+        context.fill();
+        move();
+      };
+      const move = () => {
+        petalArr.forEach((e) => {
+          e.y += e.vy;
+          e.x += e.vx;
+          if (e.y > h || e.x > w) {
+            e.y = Math.random() * 1;
+            e.x = Math.random() * w;
+          }
+        });
+      };
+      setInterval(draw, 23);
+    </script>
+  </body>
+</html>
