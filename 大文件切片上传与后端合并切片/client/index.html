@@ -34,21 +34,23 @@
               endIndex,
               CHUNK_SIZE,
             });
-            worker.onmessage = (e) => {
+            worker.onmessage = async (e) => {
               for (const pack of e.data) {
-                result[pack.index] = pack
-                let formData=new FormData()
-                for(let key in pack){
-                  formData.append(key,pack[key])
+                result[pack.index] = pack;
+                let formData = new FormData();
+                for (let key in pack) {
+                  formData.append(key, pack[key]);
                 }
-                axios.post('http://127.0.0.1:3000/upload', formData)
-                .then(function (response) {
-                  
-                })
-                .catch(function (error) {
-                  console.log(error);
-                  reject(error)
-                });
+                //得await 不然后端会报错导致切片合并失败
+                await axios
+                  .post("http://127.0.0.1:3000/upload", formData)
+                  .then((response) => {
+                    console.log(response);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                    reject(error);
+                  });
               }
               worker.terminate();
               finishWorker++;
@@ -64,14 +66,14 @@
         const file = event.target.files[0];
         console.time("cuter");
         try {
-          const chunks = await cutFile(file);
-          //都上传完了发起和并请求叫后端合并文件
-          // axios.post("http://127.0.0.1:3000/merge",JSON.stringify({filename:file.name}))
+          await cutFile(file).then(() => {
+            //都上传完了发起和并请求叫后端合并文件
+            axios.post("http://127.0.0.1:3000/merge", { filename: file.name });
+          });
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
         console.timeEnd("cuter");
-        console.log(chunks);
       }
     </script>
   </body>
