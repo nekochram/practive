@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="bg" />
+  </body>
+  <script>
+    const cvs = document.querySelector("#bg");
+    const width = window.innerWidth * devicePixelRatio;
+    const height = window.innerHeight * devicePixelRatio;
+    cvs.width = width;
+    cvs.height = height;
+    const ctx = cvs.getContext("2d");
+    const fontSize = 20 * devicePixelRatio;
+    function randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    function randomColor() {
+      return `rgb(${randomNum(0, 255)},${randomNum(0, 255)},${randomNum(
+        0,
+        255
+      )})`;
+    }
+    function randomStr() {
+      const str = "console.log(Hello,world)";
+      return str[randomNum(0, str.length - 1)];
+    }
+    const colNum = Math.floor(width / fontSize);
+    const rowNum = Math.floor(height / fontSize);
+    const cols = Array(colNum).fill(0);
+    function draw() {
+      ctx.fillStyle = "rgba(0,0,0,0.1)";
+      ctx.fillRect(0, 0, width, height);
+      for (let i = 0; i < cols.length; i++) {
+        const char = randomStr();
+        const color = randomColor();
+        const x = fontSize * i;
+        const y = (cols[i] + 1) * fontSize;
+        ctx.fillStyle = color;
+        ctx.fillText(char, x, y);
+        if (cols[i] > rowNum && Math.random() > 0.99) {
+          cols[i] = 0;
+        } else {
+          cols[i]++;
+        }
+      }
+    }
+    draw();
+    setInterval(() => {
+      draw();
+    }, 30);
+  </script>
+  <style>
+    #bg {
+      background-color: #000;
+    }
+  </style>
+</html>
