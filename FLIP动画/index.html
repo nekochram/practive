@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <button class="btn">移动</button>
+        <ul class="list">
+            <li class="item">A</li>
+            <li class="item">B</li>
+            <li class="item">C</li>
+            <li class="item">D</li>
+            <li class="item">E</li>
+            <li class="item">F</li>
+            <li class="item">G</li>
+            <li class="item">H</li>
+            <li class="item">I</li>
+            <li class="item">J</li>
+        </ul>
+    </div>
+</body>
+<script>
+    const btn=document.querySelector(".btn")
+    const list=document.querySelector(".list")
+    btn.onclick=()=>{
+        const firstElement=document.querySelector(".list .item:first-of-type")
+        const {top:start}=firstElement.getBoundingClientRect()
+        console.log("First",start)
+        list.insertBefore(firstElement,null)
+        const {top:end}=firstElement.getBoundingClientRect()
+        console.log("Last",end)
+        const dis = start - end
+        firstElement.style.transform=`translateY(${dis}px)`
+        console.log("Invert",dis)
+        ref(()=>{
+            firstElement.addEventListener("transitionend",(e)=>{
+                firstElement.style.removeProperty('transition')
+            },{once:true})
+            firstElement.style.transition='transform 1s'
+            firstElement.style.removeProperty('transform')
+            console.log("Play")
+        })
+    }
+    function ref(callback){
+        requestAnimationFrame(()=>{
+            requestAnimationFrame(callback)
+        })
+    }
+</script>
+<style>
+    .container{
+        display: flex;
+        align-items: flex-start;
+        .btn{
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 25px;
+        }
+        ul{
+            padding: 0 10px;
+            margin: 0;
+            margin-left: 20px;
+            border: 1px solid #000;
+            list-style: none;
+            .item{
+                width: 100px;
+                height: 40px;
+                border-radius: 20px;
+                background-color: #000;
+                color: #fff;
+                text-align: center;
+                line-height: 40px;
+            }
+            .item+.item{
+                margin-top: 10px;
+            }
+        }
+    }
+</style>
+</html>
