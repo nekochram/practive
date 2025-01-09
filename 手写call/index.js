@@ -6,6 +6,7 @@ Function.prototype.myCall = function (ctx, ...args) {
     enumerable: false,
   });
   const r = ctx[key](...args);
+  delete ctx[key];
   return r;
 };
 
