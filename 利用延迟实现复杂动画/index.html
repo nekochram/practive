@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="emoji">
+        <div class="eye left-eye"></div>
+        <div class="eye right-eye"></div>
+        <div class="mouth"></div>
+      </div>
+      <input type="range" class="range" min="0" max="1" step="0.01" value="0" />
+    </div>
+  </body>
+  <script>
+    const container = document.querySelector(".container");
+    const emoji = document.querySelector(".emoji");
+    const range = document.querySelector(".range");
+    range.addEventListener("input", (e) => {
+      const value = e.target.value;
+      container.style.setProperty("--delay", `${value}`);
+    });
+  </script>
+  <style>
+    .container {
+      --delay: 0;
+    }
+    .emoji {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: rgb(
+        from rgb(255, 0, 0) calc(r - var(--delay) * 255)
+          calc(g + var(--delay) * 255) calc(b)
+      );
+      animation: move 1s calc(var(--delay) * -1s) linear forwards paused;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas:
+        "eye1 eye2"
+        "mouth mouth";
+      align-items: center;
+      justify-items: center;
+    }
+    .eye {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #fff;
+    }
+    .left-eye {
+      grid-area: eye1;
+      clip-path: polygon(
+        0 calc(100% - var(--delay) * 100%),
+        100% 0,
+        100% 100%,
+        0% 100%
+      );
+    }
+    .right-eye {
+      grid-area: eye2;
+      clip-path: polygon(
+        0 0,
+        100% calc(100% - var(--delay) * 100%),
+        100% 100%,
+        0% 100%
+      );
+    }
+    .mouth {
+      grid-area: mouth;
+      width: 50px;
+      height: 20px;
+      background-color: #fff;
+    }
+    @keyframes move {
+      100% {
+        transform: translateX(100px);
+      }
+    }
+  </style>
+</html>
