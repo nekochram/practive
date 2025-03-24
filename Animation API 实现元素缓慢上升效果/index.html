@@ -1,0 +1,80 @@
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<div id="app">
+  <div
+    v-for="item in 20"
+    class="item"
+    v-slow-in
+    :style="{ backgroundColor: generateRandomColor }"
+  ></div>
+</div>
+
+<script>
+  const { createApp, computed, nextTick } = Vue;
+  const ob = new IntersectionObserver((entries) => {
+    for (const element of entries) {
+      if (element.isIntersecting) {
+        const animation = element.target.getAnimations()[0];
+        animation.play();
+        ob.unobserve(element.target);
+      }
+    }
+  });
+  const isBelowWindow = (el) => {
+    const rect = el.getBoundingClientRect();
+    return rect.top > window.innerHeight;
+  };
+  createApp({
+    setup() {
+      const generateRandomColor = computed(() => {
+        return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+      });
+      return {
+        generateRandomColor,
+      };
+    },
+    directives: {
+      SlowIn: {
+        mounted: (el) => {
+          setTimeout(() => {
+            if (!isBelowWindow(el)) return;
+            const animation = el.animate(
+              [
+                // keyframes
+                { transform: "translateY(150px)", opacity: 0.5 },
+                { transform: "translateY(0)", opacity: 1 },
+              ],
+              {
+                // timing options
+                duration: 1000,
+                easing: "ease",
+              }
+            );
+            animation.pause();
+            ob.observe(el);
+          }, 100);
+        },
+        unmounted: (el) => {
+          ob.unobserve(el);
+        },
+      },
+    },
+  }).mount("#app");
+</script>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  #app {
+    width: fit-content;
+    margin: auto;
+  }
+  .item {
+    width: 300px;
+    height: 200px;
+  }
+  .item + .item {
+    margin-top: 20px;
+  }
+</style>
