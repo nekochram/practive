@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      @keyframes cursor-blink {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+      .text {
+        width: 600px;
+        border: 1px solid black;
+        min-height: 400px;
+        border-radius: 10px;
+      }
+      .cursor {
+        position: absolute;
+        top: 0.5em;
+        left: 0;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: black;
+        animation: cursor-blink 1s infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="text-container">
+      <div class="cursor"></div>
+      <div class="text"></div>
+    </div>
+  </body>
+  <script>
+    const textContainer = document.querySelector(".text-container");
+    const textElement = document.querySelector(".text");
+    const cursor = document.querySelector(".cursor");
+
+    async function autoAppend() {
+      function delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+      function transfer(text) {
+        let result = text
+          .split("\n")
+          .map((t) => `<p>${t}</p>`)
+          .join("");
+        return result;
+      }
+      const content = `在这个瞬息万变的时代，科技正在以前所未有的速度发展。我们的生活方式、工作方式，甚至思考方式都因此发生了翻天覆地的变化。人们越来越依赖互联网来获取信息、沟通交流，以及处理日常事务。与此同时，人工智能、大数据、云计算等新兴技术不断涌现，为社会带来了巨大的便利与机遇。
+
+    然而，科技进步也带来了一些挑战。个人隐私保护、信息安全、数字鸿沟等问题日益突出。我们在享受科技带来便捷的同时，也要保持警惕，合理利用技术工具，提升自身的数字素养。
+
+    未来的世界将属于勇于创新、善于学习的人。让我们紧跟时代步伐，积极拥抱变化，做数字时代的智慧公民。`;
+
+      for (let i = 0; i < content.length; i++) {
+        let text = content.slice(0, i);
+        let html = transfer(text);
+        textElement.innerHTML = html;
+        updateCursorPosition();
+        await delay(100);
+      }
+    }
+
+    autoAppend();
+
+    function getLastTextNode(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        return node;
+      }
+      for (let i = node.childNodes.length - 1; i >= 0; i--) {
+        let child = node.childNodes[i];
+        let result = getLastTextNode(child);
+        if (result) {
+          return result;
+        }
+      }
+      return null;
+    }
+
+    function updateCursorPosition() {
+      //找到最后一个文本节点
+      const textNode = getLastTextNode(textElement);
+      //追加一个元素
+      const tempNode = document.createTextNode("|");
+      if (textNode) {
+        textNode.after(tempNode);
+      } else {
+        textElement.appendChild(tempNode);
+      }
+      //获取文字的位置
+      const range = document.createRange();
+      range.setStart(tempNode, 0);
+      range.setEnd(tempNode, 0);
+      const rect = range.getBoundingClientRect();
+      const textRect = textElement.getBoundingClientRect();
+      const left = rect.left - textRect.left;
+      const top = rect.top - textRect.top;
+      //设置光标到文字位置
+      cursor.style.transform = `translate(${left}px,${top}px)`;
+      tempNode.remove();
+    }
+  </script>
+</html>
